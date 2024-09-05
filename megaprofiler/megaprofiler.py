@@ -9,7 +9,7 @@ class MegaProfiler:
             raise ValueError("Input must be a pandas DataFrame.")
         self.data = data
 
-
+    @classmethod
     def profile(self):
     
         """Generate a basic profile of the dataset."""

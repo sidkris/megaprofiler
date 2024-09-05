@@ -5,7 +5,7 @@ class DataValidator:
     def __init__(self, data):
         self.data = data
 
-
+    @classmethod
     def validate(self, rules):
         """Validate the dataset against provided rules."""
         violations = []

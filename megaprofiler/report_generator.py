@@ -5,7 +5,7 @@ class ReportGenerator:
     def __init__(self, profile):
         self.profile = profile
 
-
+    @classmethod
     def generate_report(self):
         """Generates a report of the data profile."""
         report = []
