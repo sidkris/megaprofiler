@@ -32,5 +32,4 @@ class TestMegaProfiler(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    
-    unittest.main()
+    TestMegaProfiler().test_profiler()
