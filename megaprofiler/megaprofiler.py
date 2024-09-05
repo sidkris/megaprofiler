@@ -12,11 +12,11 @@ class MegaProfiler:
 
         """Generate a basic profile of the dataset."""
         profile = {
-            "columns": self.data.columns.tolist(),
-            "missing_values": self.data.isnull().sum().to_dict(),
-            "data_types": self.data.dtypes.to_dict(),
-            "unique_values": self.data.nunique().to_dict(),
-            "summary_statistics": self.data.describe().to_dict(),
+            "columns": data.columns.tolist(),
+            "missing_values": data.isnull().sum().to_dict(),
+            "data_types": data.dtypes.to_dict(),
+            "unique_values": data.nunique().to_dict(),
+            "summary_statistics": data.describe().to_dict(),
         }
         return profile
 
