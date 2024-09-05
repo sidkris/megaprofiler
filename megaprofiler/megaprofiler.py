@@ -24,7 +24,7 @@ class MegaProfiler:
     @classmethod
     def summarize(self, data, rules):
 
-        profile_ = self.profile(self.data)
+        profile_ = self.profile(data)
         profile_report = rg.generate_report(profile_)
         rule_violations = dv.validate(data, rules)
 

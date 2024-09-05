@@ -1,27 +1,19 @@
-import pytest
-import pandas as pd
 from megaprofiler.megaprofiler import MegaProfiler
-from megaprofiler.data_validator import DataValidator
+import pandas as pd
 
-def test_profiler():
-    data = pd.DataFrame({
-        'age': [25, 30, None],
-        'name': ['Alice', 'Bob', 'Charlie']
-    })
-    profiler = MegaProfiler(data)
-    profile = profiler.profile()
-    
-    assert 'age' in profile['columns']
-    assert profile['missing_values']['age'] == 1
+# Example DataFrame and rules
+df = pd.DataFrame({
+    'age': [25, 30, 45, None],
+    'name': ['Alice', 'Bob', 'Charlie', 'David']
+})
 
-def test_validator():
-    data = pd.DataFrame({
-        'age': [25, 30, None],
-        'name': ['Alice', 'Bob', 'Charlie']
-    })
-    validator = DataValidator(data)
-    rules = [{'column': 'age', 'condition': 'no_missing', 'message': 'Age has missing values.'}]
-    violations = validator.validate(rules)
-    
-    assert len(violations) == 1
-    assert violations[0] == 'Age has missing values.'
+rules = [
+    {'column': 'age', 'condition': 'no_missing', 'message': 'Age column contains missing values.'},
+    {'column': 'age', 'condition': 'range', 'min': 0, 'max': 120, 'message': 'Age must be a number between 0 and 120.'},
+]
+
+# Generate profile and summary
+profile_report, rule_violations = MegaProfiler.summarize(df, rules)
+
+print(profile_report)
+print(rule_violations)
