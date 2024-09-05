@@ -17,3 +17,5 @@ profile_report, rule_violations = MegaProfiler.summarize(df, rules)
 
 print(profile_report)
 print(rule_violations)
+
+
