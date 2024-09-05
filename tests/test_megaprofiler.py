@@ -1,6 +1,8 @@
+import sys
+sys.path.append("megaprofiler")
 import unittest
 import pandas as pd
-from megaprofiler.megaprofiler import MegaProfiler
+from megaprofiler import MegaProfiler
 
 class TestMegaProfiler(unittest.TestCase):
 
