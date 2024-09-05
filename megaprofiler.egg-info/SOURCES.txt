@@ -11,3 +11,4 @@ megaprofiler.egg-info/dependency_links.txt
 megaprofiler.egg-info/entry_points.txt
 megaprofiler.egg-info/requires.txt
 megaprofiler.egg-info/top_level.txt
+tests/test_megaprofiler.py

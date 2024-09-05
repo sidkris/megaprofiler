@@ -3,7 +3,7 @@ import pandas as pd
 class DataValidator:
 
     @classmethod
-    def validate(self, data, rules):
+    def validate(cls, data, rules):
 
         """Validate the dataset against provided rules."""
         violations = []

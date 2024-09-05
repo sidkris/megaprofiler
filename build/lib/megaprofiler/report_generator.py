@@ -3,7 +3,7 @@ from tabulate import tabulate
 class ReportGenerator:
 
     @classmethod
-    def generate_report(self, profile):
+    def generate_report(cls, profile):
         """Generates a report of the data profile."""
         report = []
         

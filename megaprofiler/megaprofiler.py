@@ -5,7 +5,7 @@ from report_generator import ReportGenerator as rg
 class MegaProfiler:
 
     @classmethod
-    def profile(self, data):
+    def profile(cls, data):
 
         if not isinstance(data, pd.DataFrame):
             raise ValueError("Input must be a pandas DataFrame.")
@@ -22,9 +22,9 @@ class MegaProfiler:
 
 
     @classmethod
-    def summarize(self, data, rules):
+    def summarize(cls, data, rules):
 
-        profile_ = self.profile(data)
+        profile_ = cls.profile(data)
         profile_report = rg.generate_report(profile_)
         rule_violations = dv.validate(data, rules)
 
