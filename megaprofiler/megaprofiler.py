@@ -1,17 +1,15 @@
 import pandas as pd
+from data_validator import DataValidator as dv 
+from report_generator import ReportGenerator as rg
 
 class MegaProfiler:
 
-    def __init__(self, data):
-    
-        """Initialize with a pandas DataFrame."""
+    @classmethod
+    def profile(self, data):
+
         if not isinstance(data, pd.DataFrame):
             raise ValueError("Input must be a pandas DataFrame.")
-        self.data = data
 
-    @classmethod
-    def profile(self):
-    
         """Generate a basic profile of the dataset."""
         profile = {
             "columns": self.data.columns.tolist(),
@@ -23,3 +21,11 @@ class MegaProfiler:
         return profile
 
 
+    @classmethod
+    def summarize(self, data, rules):
+
+        profile_ = self.profile(self.data)
+        profile_report = rg.generate_report(profile_)
+        rule_violations = dv.validate(data, rules)
+
+        return profile_report, rule_violations
