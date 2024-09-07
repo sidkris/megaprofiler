@@ -1,11 +1,10 @@
 import pandas as pd
 import numpy as np
-from data_validator import DataValidator as dv 
-from report_generator import ReportGenerator as rg
 import seaborn as sns
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 from sklearn.feature_extraction.text import TfidfVectorizer
+import statsmodels.api as sm
 
 class MegaProfiler:
 
@@ -25,16 +24,6 @@ class MegaProfiler:
         }
         return profile
 
-
-    # @classmethod
-    # def summarize(cls, data, rules):
-
-    #     profile_ = cls.profile(data)
-    #     profile_report = rg.generate_report(profile_)
-    #     rule_violations = dv.validate(data, rules)
-
-    #     return profile_report, rule_violations
-    
 
     @classmethod
     def pearson_correlation_analysis(cls, data):
@@ -133,4 +122,59 @@ class MegaProfiler:
         for col in data.select_dtypes(include=[np.number]):
             kurtosis_summary[col] = stats.kurtosis(data[col].dropna())
         return kurtosis_summary
+
+
+    @classmethod
+    def memory_usage_analysis(cls, data):
+        """Profile the memory usage of each column in the dataset."""
+        return data.memory_usage(deep = True)
+
+
+    @classmethod
+    def time_series_analysis(cls, data, time_column):
+        """Perform basic time series analysis including decomposition and autocorrelation."""
+        decomposition = sm.tsa.seasonal_decompose(data[time_column], model='additive')
+        return decomposition
+    
+
+
+    @classmethod
+    def validate(cls, data, rules):
+
+        """Validate the dataset against provided rules."""
+        violations = []
+        
+        for rule in rules:
+            column = rule.get('column')
+            condition = rule.get('condition')
+            message = rule.get('message', "Validation failed")
+            
+            if column not in data.columns:
+                violations.append(f"Column '{column}' not found in data.")
+                continue
+
+            # Check for missing values
+            if condition == 'no_missing':
+                if data[column].isnull().sum() > 0:
+                    violations.append(message)
+
+            # Check for data types
+            elif condition == 'data_type':
+                expected_type = rule.get('expected_type')
+                if not pd.api.types.is_dtype_equal(data[column].dtype, expected_type):
+                    violations.append(message)
+
+            # Check for value range
+            elif condition == 'range':
+                min_val, max_val = rule.get('min'), rule.get('max')
+                if not data[column].between(min_val, max_val).all():
+                    violations.append(message)
+
+        return violations
+
+
+
+if __name__ == "__main__":
+
+    print("please import to use.")
 
