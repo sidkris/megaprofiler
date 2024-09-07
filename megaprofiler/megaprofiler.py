@@ -9,12 +9,11 @@ import statsmodels.api as sm
 class MegaProfiler:
 
     @classmethod
-    def profile(cls, data):
-
+    def basic_profile_analysis(cls, data):
+        """Generate a basic profile of the dataset."""
         if not isinstance(data, pd.DataFrame):
             raise ValueError("Input must be a pandas DataFrame.")
 
-        """Generate a basic profile of the dataset."""
         profile = {
             "columns": data.columns.tolist(),
             "missing_values": data.isnull().sum().to_dict(),
@@ -22,18 +21,21 @@ class MegaProfiler:
             "unique_values": data.nunique().to_dict(),
             "summary_statistics": data.describe().to_dict(),
         }
+
         return profile
 
 
     @classmethod
     def pearson_correlation_analysis(cls, data):
         """Returns the correlation matrix for numerical columns."""
+
         return data.corr(method = "pearson")
     
 
     @classmethod
     def covariance_analysis(cls, data):
         """Returns the covariance matrix for numerical columns."""
+
         return data.cov()
     
 
@@ -76,6 +78,7 @@ class MegaProfiler:
                     'previous_mean': prior_data[col].mean(),
                     'drift': np.abs(current_data[col].mean() - prior_data[col].mean())
                 }
+
         return drift_summary
     
 
@@ -89,6 +92,7 @@ class MegaProfiler:
                 'mode': data[col].mode()[0],
                 'value_counts': data[col].value_counts().to_dict()
             }
+
         return analysis
 
 
@@ -97,12 +101,14 @@ class MegaProfiler:
         """Perform basic NLP analysis on a text column."""
         vectorizer = TfidfVectorizer()
         tfidf_matrix = vectorizer.fit_transform(data[text_column].fillna(''))
+
         return tfidf_matrix
 
 
     @classmethod
     def data_imbalance_analysis(cls, data, target_column):
         """Detect class imbalance by examining the distribution of target labels."""
+
         return data[target_column].value_counts(normalize=True)
     
 
@@ -112,6 +118,7 @@ class MegaProfiler:
         skew_summary = {}
         for col in data.select_dtypes(include=[np.number]):
             skew_summary[col] = stats.skew(data[col].dropna())
+
         return skew_summary
     
 
@@ -121,12 +128,14 @@ class MegaProfiler:
         kurtosis_summary = {}
         for col in data.select_dtypes(include=[np.number]):
             kurtosis_summary[col] = stats.kurtosis(data[col].dropna())
+
         return kurtosis_summary
 
 
     @classmethod
     def memory_usage_analysis(cls, data):
         """Profile the memory usage of each column in the dataset."""
+
         return data.memory_usage(deep = True)
 
 
@@ -134,6 +143,7 @@ class MegaProfiler:
     def time_series_analysis(cls, data, time_column):
         """Perform basic time series analysis including decomposition and autocorrelation."""
         decomposition = sm.tsa.seasonal_decompose(data[time_column], model='additive')
+
         return decomposition
     
 
