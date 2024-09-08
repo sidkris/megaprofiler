@@ -3,12 +3,13 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import scipy.stats as stats
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import PCA
 from sklearn.ensemble import IsolationForest, RandomForestClassifier
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
-from sklearn.feature_extraction import RFE
+from sklearn.feature_selection import RFE
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import silhouette_score
@@ -53,7 +54,7 @@ class MegaProfiler:
     def missing_data_heatmap(cls, data):
         """Generate a heatmap of missing values in the dataset."""
         plt.figure(figsize = (10, 7))
-        sns.heatmap(data.isnull(), cba = False, cmap = "viridis")
+        sns.heatmap(data.isnull(), cbar = False, cmap = "viridis")
         plt.title("-- MISSING DATA HEATMAP --")
         plt.show()
 
@@ -152,9 +153,9 @@ class MegaProfiler:
 
 
     @classmethod
-    def time_series_analysis(cls, data, time_column):
+    def time_series_analysis(cls, data, time_column, period = 1):
         """Perform basic time series analysis including decomposition and autocorrelation."""
-        decomposition = sm.tsa.seasonal_decompose(data[time_column], model='additive')
+        decomposition = sm.tsa.seasonal_decompose(data[time_column].dropna(), model='additive', period = period)
 
         return decomposition
     
@@ -232,7 +233,7 @@ class MegaProfiler:
         numerical_data = data.select_dtypes(include = [np.number]).dropna()
         vif_data = pd.DataFrame()
         vif_data["feature"] = numerical_data.columns
-        vif_data["VIF"] = [stats.outliers_influence.variance_inflation_factor(numerical_data.values, i) for i in range(numerical_data.shape[1])]
+        vif_data["VIF"] = [variance_inflation_factor(numerical_data.values, i) for i in range(numerical_data.shape[1])]
         return vif_data
 
 
@@ -269,10 +270,10 @@ class MegaProfiler:
 
 
     @classmethod
-    def tsne_analysis(cls, data, n_components = 2):
+    def tsne_analysis(cls, data, n_components = 2, perplexity = 2):
         """Perform t-SNE dimensionality reduction on numerical columns."""
         numerical_data = data.select_dtypes(include = [np.number]).dropna()
-        tsne = TSNE(n_components = n_components, random_state = 21)
+        tsne = TSNE(n_components = n_components, perplexity = perplexity, random_state = 21)
         tsne_result = tsne.fit_transform(numerical_data)
         return tsne_result
     
@@ -312,14 +313,9 @@ class MegaProfiler:
 
 
     @classmethod
-    def cross_validation_analysis(cls, data, target_column, cv = 5):
-        """Perform k-fold cross-validation on numerical columns."""
-        numerical_data = data.select_dtypes(include = [np.number])
-        X = numerical_data
-        y = data[target_column]
-        model = RandomForestClassifier(random_state=42)
-        scores = cross_val_score(model, X, y, cv = cv)
-        return scores.mean(), scores.std()  # Mean and standard deviation of the cross-validation scores
+    def cross_validation_analysis(cls, X, y, cv=3):
+        """Perform k-fold cross-validation and return the mean and std of scores."""
+        return cross_val_score(RandomForestClassifier(random_state=21), X, y, cv=cv).mean(), cross_val_score(RandomForestClassifier(random_state=21), X, y, cv=cv).std()
 
 
     @classmethod
