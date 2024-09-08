@@ -271,6 +271,28 @@ class MegaProfiler:
         tsne = TSNE(n_components = n_components, random_state = 21)
         tsne_result = tsne.fit_transform(numerical_data)
         return tsne_result
+    
+
+    @classmethod
+    def smote_balancing(cls, data, target_column):
+        """Balance data using SMOTE (for classification problems)."""
+        numerical_data = data.select_dtypes(include = [np.number])
+        X = numerical_data
+        y = data[target_column]
+        smote = SMOTE(random_state = 21)
+        X_res, y_res = smote.fit_resample(X, y)
+        return X_res, y_res
+
+
+    @classmethod
+    def undersampling_balancing(cls, data, target_column):
+        """Balance data using Random Undersampling."""
+        numerical_data = data.select_dtypes(include = [np.number])
+        X = numerical_data
+        y = data[target_column]
+        undersampler = RandomUnderSampler(random_state = 21)
+        X_res, y_res = undersampler.fit_resample(X, y)
+        return X_res, y_res
 
 
 if __name__ == "__main__":
