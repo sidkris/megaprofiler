@@ -1,6 +1,9 @@
 pandas
 matplotlib
+seaborn
 numpy
 tabulate
 scikit-learn
 pytest
+imbalanced-learn
+statsmodels

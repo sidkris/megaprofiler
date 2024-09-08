@@ -9,6 +9,8 @@ from sklearn.ensemble import IsolationForest, RandomForestClassifier
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
 import statsmodels.api as sm
+from imblearn.over_sampling import SMOTE
+from imblearn.under_sampling import RandomUnderSampler
 
 class MegaProfiler:
 
