@@ -28,15 +28,15 @@ class MegaProfiler:
     @classmethod
     def pearson_correlation_analysis(cls, data):
         """Returns the correlation matrix for numerical columns."""
-
-        return data.corr(method = "pearson")
+        numerical_data = data.select_dtypes(include=[np.number])
+        return numerical_data.corr(method = "pearson")
     
 
     @classmethod
     def covariance_analysis(cls, data):
         """Returns the covariance matrix for numerical columns."""
-
-        return data.cov()
+        numerical_data = data.select_dtypes(include=[np.number])
+        return numerical_data.cov()
     
 
     @classmethod
@@ -51,6 +51,7 @@ class MegaProfiler:
     @classmethod
     def zscore_outlier_analysis(cls, data, threshold = 3):
         """Detect outliers using z-score."""
+        data = data.select_dtypes(include=[np.number])
         z_scores = np.abs(stats.zscore(data.select_dtypes(include = [np.number])))
         outliers = (z_scores > threshold).any(axis = 1)
         
@@ -60,8 +61,9 @@ class MegaProfiler:
     @classmethod
     def iqr_outlier_analysis(cls, data):
         """Detect outliers using IQR (Inter-Quartile Range)."""
+        data = data.select_dtypes(include=[np.number])
         q1 = data.quantile(0.25)
-        q3 = data.qunatile(0.75)
+        q3 = data.quantile(0.75)
         iqr = q3 - q1
 
         return data[((data < (q1 - 1.5 * iqr)) | (data > (q3 + 1.5 * iqr))).any(axis = 1)]
