@@ -4,6 +4,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import PCA
+from sklearn.ensemble import IsolationForest, RandomForestClassifier
+from sklearn.cluster import KMeans
+from sklearn.manifold import TSNE
 import statsmodels.api as sm
 
 class MegaProfiler:
@@ -184,6 +188,87 @@ class MegaProfiler:
 
         return violations
 
+
+    @classmethod
+    def pca_analysis(cls, data, n_components = 2):
+        """Perform Principal Component Analysis on numerical columns."""
+        numerical_data = data.select_dtypes(include = [np.number]).dropna()
+        pca = PCA(n_components = n_components)
+        pca_result = pca.fit_transform(numerical_data)
+        explained_variance = pca.explained_variance_ratio_
+        return pca_result, explained_variance
+
+
+    @classmethod
+    def isolation_forest_analysis(cls, data, contamination = 0.1):
+        """Detect anomalies using Isolation Forest on numerical columns."""
+        numerical_data = data.select_dtypes(include = [np.number]).dropna()
+        isolation_forest = IsolationForest(contamination = contamination, random_state = 21)
+        anomaly_labels = isolation_forest.fit_predict(numerical_data)
+        return anomaly_labels
+
+
+    @classmethod
+    def feature_importance_analysis(cls, data, target_column):
+        """Analyze feature importance using RandomForest."""
+        numerical_data = data.select_dtypes(include = [np.number]).dropna()
+        X = numerical_data
+        y = data[target_column]
+        rf = RandomForestClassifier(random_state = 21)
+        rf.fit(X, y)
+        feature_importances = pd.DataFrame(rf.feature_importances_, index = X.columns, columns = ['importance'])
+        return feature_importances
+
+
+    @classmethod
+    def multicollinearity_analysis(cls, data):
+        """Detect multicollinearity using Variance Inflation Factor (VIF) on numerical columns."""
+        numerical_data = data.select_dtypes(include = [np.number]).dropna()
+        vif_data = pd.DataFrame()
+        vif_data["feature"] = numerical_data.columns
+        vif_data["VIF"] = [stats.outliers_influence.variance_inflation_factor(numerical_data.values, i) for i in range(numerical_data.shape[1])]
+        return vif_data
+
+
+    @classmethod
+    def normality_test(cls, data):
+        """Perform a Shapiro-Wilk test for normality on numerical columns."""
+        numerical_data = data.select_dtypes(include = [np.number])
+        normality_results = {}
+        for col in numerical_data.columns:
+            normality_results[col] = stats.shapiro(numerical_data[col].dropna()).pvalue
+        return normality_results
+
+
+    @classmethod
+    def ttest_analysis(cls, data, numerical_feature_1, numerical_feature_2):
+        """Perform a t-test between two numerical columns."""
+        return stats.ttest_ind(data[numerical_feature_1].dropna(), data[numerical_feature_2].dropna())
+    
+
+    @classmethod
+    def chi_square_test(cls, data, categorical_column_1, categorical_column_2):
+        """Perform a Chi-squared test between two categorical columns."""
+        contingency_table = pd.crosstab(data[categorical_column_1], data[categorical_column_2])
+        return stats.chi2_contingency(contingency_table)
+
+
+    @classmethod
+    def kmeans_clustering(cls, data, n_clusters = 3):
+        """Perform K-Means clustering on numerical columns."""
+        numerical_data = data.select_dtypes(include=[np.number]).dropna()
+        kmeans = KMeans(n_clusters = n_clusters, random_state = 21)
+        clusters = kmeans.fit_predict(numerical_data)
+        return clusters
+
+
+    @classmethod
+    def tsne_analysis(cls, data, n_components = 2):
+        """Perform t-SNE dimensionality reduction on numerical columns."""
+        numerical_data = data.select_dtypes(include = [np.number]).dropna()
+        tsne = TSNE(n_components = n_components, random_state = 21)
+        tsne_result = tsne.fit_transform(numerical_data)
+        return tsne_result
 
 
 if __name__ == "__main__":
