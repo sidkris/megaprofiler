@@ -8,6 +8,10 @@ from sklearn.decomposition import PCA
 from sklearn.ensemble import IsolationForest, RandomForestClassifier
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
+from sklearn.feature_extraction import RFE
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import silhouette_score
 import statsmodels.api as sm
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
@@ -293,6 +297,37 @@ class MegaProfiler:
         undersampler = RandomUnderSampler(random_state = 21)
         X_res, y_res = undersampler.fit_resample(X, y)
         return X_res, y_res
+
+
+    @classmethod
+    def recursive_feature_elimination(cls, data, target_column, n_features_to_select = 5):
+        """Perform Recursive Feature Elimination (RFE) on numerical columns."""
+        numerical_data = data.select_dtypes(include = [np.number])
+        X = numerical_data
+        y = data[target_column]
+        model = LogisticRegression()
+        rfe = RFE(model, n_features_to_select=n_features_to_select)
+        rfe.fit(X, y)
+        return X.columns[rfe.support_].tolist()  # Returns the selected features
+
+
+    @classmethod
+    def cross_validation_analysis(cls, data, target_column, cv = 5):
+        """Perform k-fold cross-validation on numerical columns."""
+        numerical_data = data.select_dtypes(include = [np.number])
+        X = numerical_data
+        y = data[target_column]
+        model = RandomForestClassifier(random_state=42)
+        scores = cross_val_score(model, X, y, cv = cv)
+        return scores.mean(), scores.std()  # Mean and standard deviation of the cross-validation scores
+
+
+    @classmethod
+    def silhouette_analysis(cls, data, cluster_labels):
+        """Perform Silhouette Analysis for clustering."""
+        numerical_data = data.select_dtypes(include = [np.number])
+        score = silhouette_score(numerical_data, cluster_labels)
+        return score  # Higher silhouette score indicates better-defined clusters
 
 
 if __name__ == "__main__":
