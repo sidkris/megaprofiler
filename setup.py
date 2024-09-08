@@ -7,9 +7,13 @@ setup(
     install_requires=[
         "pandas",
         "matplotlib",
+        "seaborn",
         "numpy",
         "tabulate",
-        "scikit-learn"
+        "scikit-learn",
+        "imbalanced-learn",
+        "statsmodels",
+        "scipy"
     ],
     entry_points={
         'console_scripts': [

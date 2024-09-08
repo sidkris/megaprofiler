@@ -11,11 +11,6 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: pandas
-Requires-Dist: matplotlib
-Requires-Dist: numpy
-Requires-Dist: tabulate
-Requires-Dist: scikit-learn
 
 When working with large datasets, it’s often necessary to understand data types, distributions, and potential issues (e.g., missing values, outliers) before analysis. While libraries like pandas-profiling exist, there is still room for an extensible, easy-to-use, and highly customizable profiler that integrates data validation.
 
