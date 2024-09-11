@@ -14,7 +14,3 @@ To Use :
 
 'from megaprofiler import MegaProfiler'
 
-Examples :
-
-https://replit.com/@sidkris/megaprofilertest?v=1
-
