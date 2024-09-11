@@ -8,3 +8,9 @@ Custom Reports: Generate visual reports (e.g., HTML, PDF) with configurable thre
 Data Drift Detection: Track changes in data distributions over time to identify shifts in data quality or content.
 Benefits:
 DataProfiler would be invaluable to data scientists and engineers dealing with exploratory data analysis, data quality checks, and ETL pipelines, reducing manual data investigation.
+
+
+To Use :
+
+'from megaprofiler import MegaProfiler'
+
