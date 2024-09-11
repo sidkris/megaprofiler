@@ -313,9 +313,9 @@ class MegaProfiler:
 
 
     @classmethod
-    def cross_validation_analysis(cls, X, y, cv=3):
+    def cross_validation_analysis(cls, X, y, cv = 3):
         """Perform k-fold cross-validation and return the mean and std of scores."""
-        return cross_val_score(RandomForestClassifier(random_state=21), X, y, cv=cv).mean(), cross_val_score(RandomForestClassifier(random_state=21), X, y, cv=cv).std()
+        return cross_val_score(RandomForestClassifier(random_state = 21), X, y, cv = cv).mean(), cross_val_score(RandomForestClassifier(random_state = 21), X, y, cv = cv).std()
 
 
     @classmethod

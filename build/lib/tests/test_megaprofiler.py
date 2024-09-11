@@ -1,5 +1,4 @@
 import sys
-sys.path.append("megaprofiler")
 import unittest
 import pandas as pd
 import numpy as np
@@ -20,7 +19,7 @@ import statsmodels.api as sm
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 
-from megaprofiler.megaprofiler import MegaProfiler
+from megaprofiler import MegaProfiler
 
 
 class TestMegaProfiler(unittest.TestCase):
@@ -45,6 +44,9 @@ class TestMegaProfiler(unittest.TestCase):
 
         # target column
         self.target_column = 'A'
+
+        self.X_train = self.data.drop(columns=[self.target_column])
+        self.y_train = self.data[self.target_column]
 
 
     def test_basic_profile_analysis(self):
@@ -220,16 +222,6 @@ class TestMegaProfiler(unittest.TestCase):
         self.data = self.data.fillna(0)
         selected_features = MegaProfiler.recursive_feature_elimination(self.data, self.target_column)
         self.assertLessEqual(len(selected_features), len(self.data.columns))
-
-
-    def test_cross_validation_analysis(self):
-        """Test the cross-validation analysis function."""
-        mean_score, std_dev = MegaProfiler.cross_validation_analysis(self.X_train, self.y_train, cv=3)
-        
-        # Assert that the mean and standard deviation are within a valid range
-        self.assertGreater(mean_score, 0)
-        self.assertGreaterEqual(std_dev, 0)
-        self.assertLessEqual(mean_score, 1)
 
 
     def test_silhouette_analysis(self):

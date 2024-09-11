@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: megaprofiler
-Version: 0.1.0
+Version: 0.2.0
 Summary: megaprofiler is a highly customizable and extensible data profiling library designed to help data scientists and engineers understand their datasets before performing analysis or building models.
 Home-page: https://github.com/sidkris/megaprofiler
 Author: Siddharth Krishnan
