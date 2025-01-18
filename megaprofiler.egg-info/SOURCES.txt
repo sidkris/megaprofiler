@@ -2,7 +2,14 @@ LICENSE
 README.md
 setup.py
 megaprofiler/__init__.py
-megaprofiler/megaprofiler.py
+megaprofiler/analysis.py
+megaprofiler/modeling.py
+megaprofiler/outliers.py
+megaprofiler/preprocessing.py
+megaprofiler/profiling.py
+megaprofiler/text_processing.py
+megaprofiler/utils.py
+megaprofiler/visualization.py
 megaprofiler.egg-info/PKG-INFO
 megaprofiler.egg-info/SOURCES.txt
 megaprofiler.egg-info/dependency_links.txt
@@ -10,4 +17,6 @@ megaprofiler.egg-info/entry_points.txt
 megaprofiler.egg-info/requires.txt
 megaprofiler.egg-info/top_level.txt
 tests/__init__.py
-tests/test_megaprofiler.py
+tests/test_analysis.py
+tests/test_integration.py
+tests/test_profiling.py
