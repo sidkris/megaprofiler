@@ -1,3 +1,5 @@
+[![Downloads](https://img.shields.io/pypi/dm/megaprofiler)](https://pypi.org/project/megaprofiler/)
+
 When working with large datasets, it’s often necessary to understand data types, distributions, and potential issues (e.g., missing values, outliers) before analysis. While libraries like pandas-profiling exist, there is still room for an extensible, easy-to-use, and highly customizable profiler that integrates data validation.
 
 Key Features:
@@ -14,4 +16,4 @@ To Use :
 
 'from megaprofiler import MegaProfiler'
 
-[![Downloads](https://img.shields.io/pypi/dm/megaprofiler)](https://pypi.org/project/megaprofiler/)
+
