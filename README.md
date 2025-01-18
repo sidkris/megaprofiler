@@ -14,3 +14,4 @@ To Use :
 
 'from megaprofiler import MegaProfiler'
 
+[![Downloads](https://img.shields.io/pypi/dm/megaprofiler)](https://pypi.org/project/megaprofiler/)
